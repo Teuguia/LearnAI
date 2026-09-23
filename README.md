@@ -1,57 +1,66 @@
-# Déclic IA — prototype mobile 0.1
+# LearnAI / Déclic IA
 
-Application de formation à ChatGPT en français pour le grand public, Android et iPhone.
-Nom provisoire. Formation indépendante, non affiliée à OpenAI.
+Application Expo Android/iPhone et web pour apprendre à utiliser ChatGPT.
+Les formations payantes sont servies par une API Node.js 24 avec SQLite.
 
-## Démarrage
+## Offres validées
 
-Installer Node.js compatible avec le SDK Expo de package.json, puis :
+| Offre mensuelle | Prix (XAF / FCFA) | Accès |
+| --- | ---: | --- |
+| Essentiel | 1 100 | Texte débutant, 5 exemples de prompts par jour |
+| Créatif | 2 200 | Tous les textes, exemples quotidiens et 10 prompts image personnalisés par jour |
+| Complet | 5 500 | Tous les prompts, textes, vidéos publiées et accompagnateur WhatsApp |
+
+Remise à zéro à minuit au Cameroun. Les numéros Orange Money et WhatsApp sont
+configurés dans les variables privées du serveur. Validation manuelle par un
+administrateur, sans prélèvement automatique.
+
+## Démarrer
+
+Node.js 24 ou plus récent requis.
 
 ```sh
 npm ci
+cp .env.example .env
+cp server/.env.example server/.env
+node --env-file=server/.env server/api.mjs
+```
+
+Dans un autre terminal :
+
+```sh
 npx expo start
 ```
 
-Ouvrir le projet avec une version d’Expo Go compatible avec le SDK indiqué dans package.json, ou un build de développement. Les scripts `npm run android` et `npm run ios` ciblent les simulateurs installés (le simulateur iOS requiert macOS).
+Configurer l'adresse de l'API dans `.env` avant le démarrage ; un téléphone physique
+nécessite une adresse joignable depuis le téléphone. Ne pas mettre de secret dans
+une variable `EXPO_PUBLIC_*`. Les builds de diffusion nécessitent HTTPS.
 
-## Inclus
+Voir **[le guide d'installation et d'exploitation](docs/memberships.md)** pour activer
+les paiements manuels, créer l'administrateur, ajouter les vidéos et préparer l'hébergement.
 
-- Accueil, catalogue, favoris et progression.
-- Six leçons en français, exemples, exercices et quiz avec explications.
-- Validation après une bonne réponse ; une leçon ne compte qu’une fois.
-- Brouillons, favoris et progression stockés localement avec AsyncStorage.
-- Contenus embarqués, utilisables hors ligne après installation.
-- Zones tactiles larges et libellés d’accessibilité.
-
-Les brouillons ne sont pas évalués par IA. La répétition du quiz est autorisée : ce score n’est pas une certification.
-
-## Limites et étapes restantes
-
-Prototype de code, pas une application publiée. Pas de compte utilisateur, synchronisation AWS, paiement, notifications, administration de contenus ou tuteur IA. Les icônes sont celles du modèle Expo et doivent être remplacées avant publication. Aucun compte Apple/Google ni identifiant d’application définitif n’a été configuré.
-
-Avant une bêta : essais sur appareils Android et iPhone (navigation, clavier, rotation, agrandissement du texte, lecteur d’écran, reprise après fermeture et hors ligne), identité visuelle, validation pédagogique puis signature des builds. Prévoir la politique de confidentialité et l’effacement des données avant lancement public.
-
-## Qualité
+## Vérification
 
 ```sh
-npx tsc --noEmit
-npx expo export --platform android --platform ios --output-dir dist
+npm run test:server
+npm run lint
+npm run typecheck
+npx expo export --platform android --platform ios --platform web
 ```
 
-Les contrôles réellement exécutés sont consignés dans docs/validation.md.
+## État de cette version
 
-## GitHub
+Comptes, offres, déclaration et examen des paiements, accès serveur, quotas, favoris,
+brouillons, progression et lecteur vidéo intégrés. Dix leçons débutants et deux leçons
+approfondies disponibles côté serveur. Vingt exemples de prompts constituent la banque
+initiale ; les sélections quotidiennes peuvent revenir dans le temps.
 
-Aucun dépôt accessible n’a été renvoyé par le connecteur lors de la préparation. Projet non poussé. Connecter ou fournir un dépôt dédié avant publication du code. Ne pas placer de secrets dans l’application.
+Les prompts image sont assemblés par un modèle de texte avec les choix du membre ;
+aucun modèle d'IA ni génération d'image n'est appelé. Aucun fichier vidéo de cours
+n'est fourni. Aucune API Orange Money n'est appelée : l'administrateur vérifie la
+réception réelle hors application avant de valider. MTN MoMo reste à intégrer.
 
-## Architecture envisagée pour la suite
-
-Le client React Native/Expo partage le code Android/iOS. AWS pourra accueillir l’authentification, les contenus et la progression. Ce choix sera détaillé avant raccordement ; aucune ressource AWS n’est provisionnée dans ce prototype. Un éventuel tuteur OpenAI passera par un backend avec quotas, jamais par une clé secrète embarquée. L’enseignement des fonctions de ChatGPT et les capacités d’un tuteur intégré sont deux éléments distincts.
-
-## Sources
-
-- https://learn.chatgpt.com/docs/prompting — principes de formulation et d’itération.
-- https://docs.expo.dev/more/create-expo/ — initialisation du projet.
-- https://docs.amplify.aws/flutter/how-amplify-works/ — aperçu des services backend et des bibliothèques mobiles AWS ; pas une configuration de ce client.
-
-Contenu initial préparé le 22 septembre 2026. Vérifier les leçons liées à des fonctionnalités avant chaque publication.
+Les achats externes sont masqués dans les builds iPhone et `store`. Les achats intégrés
+Apple/Google ne sont pas encore implémentés. Cette version nécessite un hébergement
+API, des essais sur appareils et la préparation commerciale décrite dans le guide
+avant ouverture au public. Aucun APK/IPA signé n'est produit par cette PR.
