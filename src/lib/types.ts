@@ -1,0 +1,13 @@
+export type PlanId = 'essential' | 'creative' | 'complete';
+export type Plan = { id: PlanId; name: string; price: number; description: string };
+export type LessonMeta = { id: string; title: string; tag: string; minutes: number; level: 'beginner' | 'advanced'; video: boolean };
+export type Lesson = LessonMeta & { body: string; example: string; challenge: string; question: string; options: string[]; answer: number; explanation: string };
+export type Payment = { id: string; plan: PlanId; amount: number; reference: string; phone: string; status: 'pending' | 'approved' | 'rejected' | 'revoked'; created: number; reason: string | null; name?: string; email?: string };
+export type Progress = { lesson_id: string; completed: number; favorite: number; draft: string };
+export type User = { id: string; name: string; email: string; role: 'member' | 'admin' };
+export type Me = { user: User; membership: { plan: PlanId; ends: number } | null; payments: Payment[]; progress: Progress[] };
+export type Catalog = { plans: Plan[]; lessons: LessonMeta[]; manualPayments: boolean; merchant: string | null };
+export type Prompts = { day: string; examples: string[]; history: { id: string; prompt: string; created: number }[]; remaining: number | null; imageAccess: boolean };
+export const planNames = { essential: 'Essentiel', creative: 'Créatif', complete: 'Complet' };
+export const paymentNames = { pending: 'En cours de vérification', approved: 'Validé', rejected: 'Refusé', revoked: 'Accès révoqué' };
+export const dateLabel = (ms: number) => new Date(ms).toLocaleDateString('fr-FR', { timeZone: 'Africa/Douala', day: 'numeric', month: 'long', year: 'numeric' });

@@ -39,3 +39,11 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Server data, recordings and local configuration
+.env
+server/data/
+server/media/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
